@@ -1,0 +1,260 @@
+$mainColor: #936AE4;
+
+*, *:after, *:before {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: #ECF3F7;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+#app {
+  height: 100vh;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title {
+  margin: auto auto 1rem auto;
+  animation: slide-in .8s .2s ease both;
+}
+
+.card {
+  animation: slide-in .8s .3s ease both;  
+  margin: auto;
+  width: 20rem;
+  min-height: 28rem;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 38px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    -.4rem .8rem 2rem rgba(176,188,207,.5),
+    inset .2rem -.2rem .7rem rgba(188,188,212,.73),
+    inset 1rem -1rem 2rem rgba(10,197,137,.05);
+}
+
+.text {
+  height: 2rem;
+  flex: 1;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+input, textarea {
+  padding: .4rem .8rem .2rem 0;
+  border: none;
+  border-bottom: 2px solid $mainColor;
+  font-size: .8rem;
+}
+
+label:not(:first-child) {
+  margin-top: .8rem;
+}
+
+.qr-view {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.btn {
+  margin: 1rem 0 0 auto;
+  background: $mainColor;
+  color: white;
+  border-radius: 4rem;
+  border: none;
+  padding: .4rem 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+    opacity: .7;
+    background: #ccc;
+  }
+}
+
+.btn--camera {
+  display: flex;
+  position: absolute;
+  z-index: 20;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  margin: auto;
+  top: 1rem;
+  left: 0; right: 0;
+  border: 2px solid #c7c7c7;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  &:hover, &.active {
+    border-color: $mainColor;
+    svg {
+      fill: $mainColor;
+    }
+  }
+  svg {
+    flex: 1;
+    fill: #c7c7c7;
+  }
+}
+
+.form-group {
+  position: relative;
+  input, textarea {
+    width: 100%;
+    padding-right: 2rem;
+  }
+}
+
+.tg-pw {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.capture {
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  box-shadow:
+    inset .2rem -.2rem .7rem rgba(188,188,212,.73),
+    inset 1rem -1rem 2rem rgba(10,197,137,.05);
+  border-radius: inherit;
+  background: white;
+  h2 {
+    padding: 1rem;
+    font-weight: 300;
+    text-align: center;
+  }
+}
+
+.reveal-enter-active, .reveal-leave-active {
+  clip-path: circle(120% at 50% 2rem);
+  transition: clip-path .8s .2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.reveal-enter, .reveal-leave-to {
+  clip-path: circle(0% at 50% 2rem);
+}
+
+.qr-reader {
+  width: 100%;
+  &__wrapper {
+    &.blur {
+      filter: blur(8px);
+    }
+  }
+}
+
+.password__wrapper {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.7);
+  display: flex;
+  z-index: 4;
+  input {
+    margin: auto;
+    border-radius: 4px;
+    box-shadow: 0 .4rem 1rem rgba(0,0,0,.4);
+    padding: 1rem;
+    width: 90%;
+    border: none;
+    outline: none;
+  }
+}
+
+.shake {
+  animation: shake .4s linear forwards;
+}
+
+$amount: .5rem;
+@keyframes shake {
+  0% { transform: translateX(-$amount) }
+  20% { transform: translateX($amount) }
+  40% { transform: translateX(-$amount) }
+  60% { transform: translateX($amount) }
+  80% { transform: translateX(-$amount) }
+  100% { transform: translateX(0rem) }
+}
+
+.decrypted {
+  word-break: break-all;
+  white-space: pre-wrap;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.print {
+  display: none;
+}
+
+@media print {
+  html, body {
+    background: white;
+  }
+  
+  #app {
+    display: block;
+  }
+  
+  .title {
+    display: none;
+  }
+  
+  h1 {
+    font-size: 24pt;
+  }
+
+  h2 {
+    font-size: 14pt;
+    margin-top: 25px;
+  }
+  
+  .card {
+    display: none;
+  }
+
+  .print {
+    display: block;
+    text-align: center;
+  }
+  
+  .qr-view {
+    width: 50%;
+    margin: auto;
+  }
+}

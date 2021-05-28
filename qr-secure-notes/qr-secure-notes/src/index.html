@@ -1,0 +1,81 @@
+<div id="app" v-cloak>
+  <h1 class="title">Safely store secure notes</h1>
+  <div class="card">
+    <transition name="reveal">
+      <div v-show="decoder.stream" class="capture">
+        <div :class="{ blur: requirePassword }" class="qr-reader__wrapper">
+          <video autoplay class="qr-reader"></video>
+          <h2 v-if="!decData">Waiting for a QR encrypted note...</h2>
+          <p class="decrypted" v-if="decData">{{ decData }}</p>
+        </div>
+        
+        <div v-if="requirePassword" class="password__wrapper">
+          <input
+            v-model="password"
+            placeholder="QR password"
+            type="password"
+            :class="{ shake: wrongPassword }"
+            @animationend="() => (this.wrongPassword = false)"
+            v-on:keyup.enter="showDecrypted"
+          >
+        </div>
+      </div>
+    </transition>
+    
+    <button
+      @click="toggleCamera"
+      type="button"
+      :class="{ active: decoder.stream }"
+      class="btn--camera"
+    >
+      <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="3.2"/>
+        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+        <path d="M0 0h24v24H0z" fill="none"/>
+      </svg>
+    </button>
+    <label for="text">Title</label>
+    <input v-model="title" type="text" placeholder="My Paper Wallet">
+
+    <label for="text">Text to encrypt</label>
+    <textarea
+      id="text"
+      class="text"
+      v-model="text"
+      placeholder="Passwords, Ethereum private keys..."
+    ></textarea>
+    <label for="key">Key / Password</label>
+    <div class="form-group">
+      <input
+        id="key"
+        class="key"
+        v-model="key"
+        :type="showPw && 'text' || 'password'"
+      >
+      <button v-if="key.length" class="tg-pw" type="button" @click="tgPw">{{ showPw && '🐵' || '🙈' }}</button>
+    </div>
+    
+
+    <img class="qr-view" :src="qrCodeImg">
+
+    <button
+      :disabled="btnDisabled"
+      type="button"
+      class="btn"
+      @click="print"
+    >Print</button>
+  </div>
+
+  <div class="print">
+    <h1 class="print__title">{{ title }}</h1>
+    <img class="qr-view" :src="qrCodeImg">
+    
+    <h2>How to decode?</h2>
+    <p>Go to <strong>https://codepen.io/mallendeo/full/brZJBa</strong> and scan this with your webcam.</p>
+    <strong>or</strong>
+    <p>
+      Scan the code with an app and decode it with
+      <pre>$ openssl enc -d -base64 -A -aes-256-cbc -in <strong>encoded.txt</strong> -out <strong>decoded.txt</strong></pre>
+    </p>
+  </div>
+</div>
